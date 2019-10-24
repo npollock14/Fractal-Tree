@@ -44,10 +44,10 @@ public class FractalTreeMain extends JPanel
 	float thickDev = .07f; //.07
 
 	int frame = 0;
-	int seed = 5593;
+	int seed = 3513;
 	Random r = new Random(seed);
 	JSlider s1 = new JSlider();
-	//187
+	//3513
 
 	// ============== end of settings ==================
 
