@@ -15,7 +15,9 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.Timer;
+import javax.swing.event.ChangeEvent;
 
 public class FractalTreeMain extends JPanel
 		implements ActionListener, KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
@@ -28,14 +30,24 @@ public class FractalTreeMain extends JPanel
 	boolean[] mouse = new boolean[200];
 	int centerX = screenWidth / 2;
 	int centerY = screenHeight;
+
 	double initialBranchHeight = 300.0;
 	double lineLengthLimit = 10;
 	float angleIncrease = 0.4f;
+	
+	float branchesDeviation = 1.8f;//1.8
+	float lenMean = .7f; //.7
+	float lenDev = .05f; //.05
+	float treeLean = 0.0f; //0.0
+	float thickMean = .75f; //.75
+	float thickDev = .01f; //.01
+
 	int frame = 0;
 	int seed = 5593;
 	Random r = new Random(seed);
-	//5593
-	//1512
+	JSlider s1 = new JSlider();
+	// 5593
+	// 1512
 
 	// ============== end of settings ==================
 
@@ -44,33 +56,29 @@ public class FractalTreeMain extends JPanel
 		Graphics2D g2 = (Graphics2D) g;
 		g.drawString("Seed: " + seed, 0, 100);
 		r = new Random(seed);
-		branch(200, g2, centerX, centerY, 0, 14.0f);
-		
+		branch(200, g2, centerX, centerY, gau(treeLean, angleIncrease/10), 14.0f);
+
 	}
 
 	public void update() {
-if(keys[32]) {
-	seed = rBtw(0, 10000);
-}
+		if (keys[32]) {
+			seed = rBtw(0, 10000);
+		}
 	}
 
 	private void init() {
+		s1.setVisible(true);
 
 	}
 
 	public void branch(double len, Graphics2D g2, int centerX, int centerY, double a, float thickness) {
 		drawLine(centerX, centerY, len, a, g2, thickness);
 		if (len >= lineLengthLimit) {
-			for(int i = 0; i < (1 + Math.abs(gau(0,1.8f))); i++) {
-			branch(len * gau(.7f,.05f), g2, (int) (centerX + len * Math.sin(a)), (int) (centerY - (len * Math.cos(a))),
-					a + gau(0,angleIncrease), thickness * gau(.75f,.01f));
+			for (int i = 0; i < (1 + Math.abs(gau(0, branchesDeviation))); i++) {
+				branch(len * gau(lenMean, lenDev), g2, (int) (centerX + len * Math.sin(a)),
+						(int) (centerY - (len * Math.cos(a))), a + gau(treeLean, angleIncrease),
+						thickness * gau(.75f, .01f));
 			}
-//			if(Math.random() > .3)
-//			branch(len * .75, g2, (int) (centerX + len * Math.sin(a)), (int) (centerY - (len * Math.cos(a))),
-//					a - Math.random()*angleIncrease, (float) (thickness * .75));
-//			if(Math.random() > .3)
-//			branch(len * .75, g2, (int) (centerX + len * Math.sin(a)), (int) (centerY - (len * Math.cos(a))),
-//					a + randSign()*Math.random()*angleIncrease, (float) (thickness * .75));
 		}
 	}
 
@@ -82,9 +90,11 @@ if(keys[32]) {
 	public int rBtw(int min, int max) {
 		return (int) ((Math.random() * (max - min + 1.0) + min));
 	}
+
 	public int randSign() {
 		return Math.random() > .5 ? 1 : -1;
 	}
+
 	public float gau(float mean, float sd) {
 		return (float) (r.nextGaussian() * sd + mean);
 
@@ -98,10 +108,9 @@ if(keys[32]) {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
-		
 		update();
 		repaint();
-		//t.stop();
+		// t.stop();
 	}
 
 	public static void main(String[] arg) {
@@ -137,6 +146,13 @@ if(keys[32]) {
 	public void keyPressed(KeyEvent e) {
 		keys[e.getKeyCode()] = true;
 
+	}
+
+	public void stateChanged(ChangeEvent e) {
+		JSlider source = (JSlider) e.getSource();
+		if (!source.getValueIsAdjusting()) {
+
+		}
 	}
 
 	@Override
