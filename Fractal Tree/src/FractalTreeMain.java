@@ -31,11 +31,12 @@ public class FractalTreeMain extends JPanel
 	int centerX = screenWidth / 2;
 	int centerY = screenHeight;
 
-	double initialBranchHeight = 300.0;
-	double lineLengthLimit = 10;
-	float angleIncrease = 0.4f;
+	double initialBranchHeight = 250.0; //300
+	double lineLengthLimit = 10; //10
+	float initialThickness = 14.0f;
 	
-	float branchesDeviation = 1.8f;//1.8
+	float angleIncrease = 0.4f; //.4
+	float branchesDeviation = 2f;//1.8
 	float lenMean = .7f; //.7
 	float lenDev = .05f; //.05
 	float treeLean = 0.0f; //0.0
@@ -46,8 +47,7 @@ public class FractalTreeMain extends JPanel
 	int seed = 5593;
 	Random r = new Random(seed);
 	JSlider s1 = new JSlider();
-	// 5593
-	// 1512
+	//187
 
 	// ============== end of settings ==================
 
@@ -56,7 +56,7 @@ public class FractalTreeMain extends JPanel
 		Graphics2D g2 = (Graphics2D) g;
 		g.drawString("Seed: " + seed, 0, 100);
 		r = new Random(seed);
-		branch(200, g2, centerX, centerY, gau(treeLean, angleIncrease/10), 14.0f);
+		branch(initialBranchHeight, g2, centerX, centerY, gau(treeLean, angleIncrease/10), initialThickness);
 
 	}
 
