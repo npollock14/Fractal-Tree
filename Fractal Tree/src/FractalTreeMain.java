@@ -30,19 +30,28 @@ public class FractalTreeMain extends JPanel
 	int centerY = screenHeight;
 	double initialBranchHeight = 300.0;
 	double lineLengthLimit = 10;
-	double angleIncrease = Math.PI/4;
+	float angleIncrease = 0.4f;
+	int frame = 0;
+	int seed = 5593;
+	Random r = new Random(seed);
+	//5593
+	//1512
 
 	// ============== end of settings ==================
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		// drawLine(centerX,centerY,100,Math.PI/4,g);
+		g.drawString("Seed: " + seed, 0, 100);
+		r = new Random(seed);
 		branch(200, g2, centerX, centerY, 0, 14.0f);
+		
 	}
 
-	public void update() throws InterruptedException {
-
+	public void update() {
+if(keys[32]) {
+	seed = rBtw(0, 10000);
+}
 	}
 
 	private void init() {
@@ -51,11 +60,17 @@ public class FractalTreeMain extends JPanel
 
 	public void branch(double len, Graphics2D g2, int centerX, int centerY, double a, float thickness) {
 		drawLine(centerX, centerY, len, a, g2, thickness);
-		if (len >= 10) {
-			branch(len * .75, g2, (int) (centerX + len * Math.sin(a)), (int) (centerY - (len * Math.cos(a))),
-					a + Math.random()*angleIncrease, (float) (thickness * .75));
-			branch(len * .75, g2, (int) (centerX + len * Math.sin(a)), (int) (centerY - (len * Math.cos(a))),
-					a - Math.random()*angleIncrease, (float) (thickness * .75));
+		if (len >= lineLengthLimit) {
+			for(int i = 0; i < (1 + Math.abs(gau(0,1.8f))); i++) {
+			branch(len * gau(.7f,.05f), g2, (int) (centerX + len * Math.sin(a)), (int) (centerY - (len * Math.cos(a))),
+					a + gau(0,angleIncrease), thickness * gau(.75f,.01f));
+			}
+//			if(Math.random() > .3)
+//			branch(len * .75, g2, (int) (centerX + len * Math.sin(a)), (int) (centerY - (len * Math.cos(a))),
+//					a - Math.random()*angleIncrease, (float) (thickness * .75));
+//			if(Math.random() > .3)
+//			branch(len * .75, g2, (int) (centerX + len * Math.sin(a)), (int) (centerY - (len * Math.cos(a))),
+//					a + randSign()*Math.random()*angleIncrease, (float) (thickness * .75));
 		}
 	}
 
@@ -64,9 +79,15 @@ public class FractalTreeMain extends JPanel
 		g2.drawLine(x, y, (int) (x + len * Math.sin(a)), (int) (y - len * Math.cos(a)));
 	}
 
-	public double rBtw(double min, double max) {
-		Random r = new Random();
-		return ((r.nextDouble() * (max - min + 1.0) + min));
+	public int rBtw(int min, int max) {
+		return (int) ((Math.random() * (max - min + 1.0) + min));
+	}
+	public int randSign() {
+		return Math.random() > .5 ? 1 : -1;
+	}
+	public float gau(float mean, float sd) {
+		return (float) (r.nextGaussian() * sd + mean);
+
 	}
 
 	public Color rColor() {
@@ -77,14 +98,10 @@ public class FractalTreeMain extends JPanel
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
-		try {
-			update();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		update();
 		repaint();
-		t.stop();
+		//t.stop();
 	}
 
 	public static void main(String[] arg) {
