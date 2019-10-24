@@ -48,6 +48,7 @@ public class FractalTreeMain extends JPanel
 	Random r = new Random(seed);
 	JSlider s1 = new JSlider();
 	//3513
+	//4274
 
 	// ============== end of settings ==================
 
