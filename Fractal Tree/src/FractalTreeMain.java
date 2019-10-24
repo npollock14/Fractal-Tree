@@ -30,7 +30,7 @@ public class FractalTreeMain extends JPanel
 	int centerY = screenHeight;
 	double initialBranchHeight = 300.0;
 	double lineLengthLimit = 10;
-	double angleIncrease = Math.PI / 25;
+	double angleIncrease = Math.PI/4;
 
 	// ============== end of settings ==================
 
@@ -53,9 +53,9 @@ public class FractalTreeMain extends JPanel
 		drawLine(centerX, centerY, len, a, g2, thickness);
 		if (len >= 10) {
 			branch(len * .75, g2, (int) (centerX + len * Math.sin(a)), (int) (centerY - (len * Math.cos(a))),
-					a + rBtw(0, angleIncrease), (float) (thickness * .75));
+					a + Math.random()*angleIncrease, (float) (thickness * .75));
 			branch(len * .75, g2, (int) (centerX + len * Math.sin(a)), (int) (centerY - (len * Math.cos(a))),
-					a - rBtw(0, angleIncrease), (float) (thickness * .75));
+					a - Math.random()*angleIncrease, (float) (thickness * .75));
 		}
 	}
 
@@ -66,7 +66,7 @@ public class FractalTreeMain extends JPanel
 
 	public double rBtw(double min, double max) {
 		Random r = new Random();
-		return ((r.nextDouble() * (max - min + 1) + min));
+		return ((r.nextDouble() * (max - min + 1.0) + min));
 	}
 
 	public Color rColor() {
