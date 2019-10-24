@@ -40,7 +40,7 @@ public class FractalTreeMain extends JPanel
 	float lenDev = .05f; //.05
 	float treeLean = 0.0f; //0.0
 	float thickMean = .75f; //.75
-	float thickDev = .01f; //.01
+	float thickDev = .07f; //.07
 
 	int frame = 0;
 	int seed = 5593;
