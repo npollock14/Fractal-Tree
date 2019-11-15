@@ -37,7 +37,7 @@ public class FractalTreeMain extends JPanel
 	
 	float angleIncrease = 0.4f; //.4
 	float branchesDeviation = 2f;//1.8
-	float lenMean = .7f; //.7
+	float lenMean = .70f; //.7
 	float lenDev = .05f; //.05
 	float treeLean = 0.0f; //0.0
 	float thickMean = .75f; //.75
